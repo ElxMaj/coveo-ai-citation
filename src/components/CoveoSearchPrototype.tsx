@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -38,37 +37,37 @@ export default function CoveoSearchPrototype() {
   ];
   
   const followUpQuestions = [
-    'What role does AI play in generating actionable insights from sales data?',
-    'What are some successful case studies demonstrating the use of sales analytics data for actionable insights?',
-    'What types of support services practices are highlighted in the TSIA Support Services Benchmark?',
-    'What tactics are most commonly used by education services organizations to improve training content consumption among their clients?',
-    'How can benchmarking help improve the financial performance of service offerings?',
+    'What is Coveo Machine Learning and how does it improve search results?',
+    'How does Coveo handle personalization in enterprise search?',
+    'What are Coveo's key features for e-commerce search?',
+    'How does Coveo's query suggestion feature work?',
+    'What security features does Coveo offer for enterprise search?',
   ];
 
   const sourceCategories = [
     {
-      title: 'Turn Sales Analytics Data into Actionable Insights',
-      category: 'CRO Council'
+      title: 'Coveo for Commerce Implementation Guide',
+      category: 'Implementation'
     },
     {
-      title: 'TSIA Support Services Benchmarking',
-      category: 'Support Services'
+      title: 'Coveo Machine Learning Features Documentation',
+      category: 'Machine Learning'
     },
     {
-      title: 'Trends in Content Consumption within Education Services',
-      category: 'Education Services'
+      title: 'Coveo Cloud V2 Administrator Guide',
+      category: 'Administration'
     },
     {
-      title: 'TSIA Offering Management Benchmarking',
-      category: 'Benchmarking'
+      title: 'Coveo for Salesforce Implementation Guide',
+      category: 'Implementation'
     },
     {
-      title: 'TSIA Managed Services Benchmarking',
-      category: 'Benchmarking'
+      title: 'Coveo Relevance Cloud Documentation',
+      category: 'Product Docs'
     },
     {
-      title: 'TSIA Education Services Benchmarking',
-      category: 'Education Services'
+      title: 'Coveo JavaScript Search Framework Guide',
+      category: 'Developer'
     }
   ];
 
@@ -229,7 +228,7 @@ export default function CoveoSearchPrototype() {
                   </svg>
                   <h2 className="text-lg font-semibold">Sources Used</h2>
                 </div>
-                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 ml-2">21 Sources</Badge>
+                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 ml-2">15 Sources</Badge>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -255,16 +254,16 @@ export default function CoveoSearchPrototype() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Ask anything..."
+                  placeholder="Ask anything about Coveo..."
                   className="w-full bg-white border border-gray-200 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-accent-blue"
                 />
                 <ArrowRight className="absolute right-4 top-1/2 transform -translate-y-1/2 text-brand-primary" size={18} />
               </div>
               <p className="text-xs text-gray-400 mt-2 text-center">
                 AI responses may be inaccurate. For key decisions, please 
-                <a href="#" className="text-accent-blue underline mx-1">submit an inquiry.</a>
+                <a href="#" className="text-accent-blue underline mx-1">contact Coveo Support.</a>
                 Learn more about 
-                <a href="#" className="text-accent-blue underline ml-1">TSIA's privacy policy.</a>
+                <a href="#" className="text-accent-blue underline ml-1">Coveo's privacy policy.</a>
               </p>
             </div>
           </div>
