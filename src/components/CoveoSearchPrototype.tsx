@@ -128,7 +128,7 @@ export default function CoveoSearchPrototype() {
                     sources={answer.sources} 
                     onClick={() => toggleSource(parseInt(segments[index + 1].id))}
                   />
-                  {showSources === parseInt(segments[index + 1].id) && <div className="my-4 ml-6 animate-gentle-appear">
+                  {showSources === parseInt(segments[index + 1].id) && <div className="mt-4 mb-4 animate-gentle-appear">
                       <SourceCard source={answer.sources.find(s => s.id.toString() === segments[index + 1].id)!} />
                     </div>}
                   {afterPeriod}
