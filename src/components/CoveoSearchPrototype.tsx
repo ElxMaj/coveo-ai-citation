@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
-import { ArrowRight, FileText, Link } from 'lucide-react';
+import { ArrowRight, FileText, Link, Search, MessageCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 /**
@@ -22,10 +21,20 @@ interface Source {
   date?: string;
   type: string;
 }
+
+interface ReasoningStep {
+  step: number;
+  title: string;
+  description: string;
+  timeMs: number;
+}
+
 interface AnswerData {
   answer: string;
   sources: Source[];
+  reasoning: ReasoningStep[];
 }
+
 export default function CoveoSearchPrototype() {
   const presetQueries = ['Steps to integrate Coveo with Salesforce Service Cloud'];
   const followUpQuestions = ['What is Coveo Machine Learning and how does it improve search results?', 'How does Coveo handle personalization in enterprise search?', 'What are Coveo\'s key features for e-commerce search?'];
@@ -55,7 +64,46 @@ export default function CoveoSearchPrototype() {
         console.error('No matching mock file for', slug);
         return;
       }
-      setAnswer(data);
+      
+      // Add mock reasoning data to the existing data
+      const mockReasoningData = [
+        {
+          step: 1,
+          title: "Query Analysis",
+          description: "Analyzed query to identify key concepts: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
+          timeMs: 85
+        },
+        {
+          step: 2,
+          title: "Knowledge Base Search",
+          description: "Searched Coveo documentation with specialized weights for technical integration guides. Found 14 potential documents with relevance scores between 0.82-0.95.",
+          timeMs: 223
+        },
+        {
+          step: 3,
+          title: "Source Evaluation",
+          description: "Assessed document freshness, accuracy, and comprehensiveness. Selected 3 primary sources with highest combined relevance and authority scores.",
+          timeMs: 178
+        },
+        {
+          step: 4,
+          title: "Semantic Chunking",
+          description: "Extracted relevant passages from selected documents. Applied contextual chunking to maintain procedural integrity of multi-step instructions.",
+          timeMs: 144
+        },
+        {
+          step: 5,
+          title: "Answer Synthesis",
+          description: "Generated comprehensive answer using extracted information. Structured response with sequential steps, maintained technical accuracy, and preserved source attribution.",
+          timeMs: 267
+        }
+      ];
+      
+      // Add the reasoning data to the answer
+      setAnswer({
+        ...data,
+        reasoning: mockReasoningData
+      });
     } catch (err) {
       console.error('Error loading mock file for', slug, err);
       setAnswer(null);
@@ -154,6 +202,7 @@ export default function CoveoSearchPrototype() {
       return <Link size={16} className="mr-2 text-apple-light-text" />;
     }
   };
+  
   return <div className="min-h-screen bg-apple-gray font-sf text-apple-dark flex flex-col items-center">
       {/* Header - Updated with much darker purple gradient */}
       <header className="w-full py-10 bg-gradient-to-r from-coveo-purple-darker to-coveo-purple-dark">
@@ -201,6 +250,15 @@ export default function CoveoSearchPrototype() {
                       </Badge>
                     </div>
                   </TabsTrigger>
+                  <TabsTrigger value="reasoning" className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={18} className="text-coveo-purple" />
+                      <span className="text-sm font-medium">Reasoning</span>
+                      <Badge className="bg-coveo-purple/10 text-coveo-purple hover:bg-coveo-purple/20 ml-1">
+                        {answer.reasoning.length}
+                      </Badge>
+                    </div>
+                  </TabsTrigger>
                 </TabsList>
               </div>
               
@@ -244,6 +302,35 @@ export default function CoveoSearchPrototype() {
                         <span className="text-xs text-coveo-purple">View source ↗</span>
                       </div>
                     </a>)}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="reasoning" className="pt-6 mt-0">
+                <div className="space-y-5">
+                  {answer.reasoning.map((step, index) => (
+                    <div key={index} className="border-l-2 border-coveo-purple/30 pl-4">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="text-base font-semibold text-coveo-purple flex items-center gap-2">
+                            <span className="bg-coveo-purple text-white rounded-full w-5 h-5 inline-flex items-center justify-center text-xs">
+                              {step.step}
+                            </span>
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-apple-dark mt-1.5">{step.description}</p>
+                        </div>
+                        <span className="text-xs text-apple-light-text whitespace-nowrap">
+                          {step.timeMs} ms
+                        </span>
+                      </div>
+                      {index < answer.reasoning.length - 1 && (
+                        <div className="h-4 border-l border-dashed border-coveo-purple/20 ml-2.5 mt-1"></div>
+                      )}
+                    </div>
+                  ))}
+                  <div className="text-xs text-apple-light-text text-right mt-4">
+                    Total time: {answer.reasoning.reduce((total, step) => total + step.timeMs, 0)} ms
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>
