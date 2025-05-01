@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 /**
  * CoveoSearchPrototype – Apple-inspired UI/UX
@@ -41,6 +42,7 @@ export default function CoveoSearchPrototype() {
   const [query, setQuery] = useState('');
   const [answer, setAnswer] = useState<AnswerData | null>(null);
   const [showSources, setShowSources] = useState(false);
+  const [activeTab, setActiveTab] = useState("perplexity");
 
   /**
    * Fetch mock JSON in /src/mock-data based on slugified query.
@@ -49,6 +51,7 @@ export default function CoveoSearchPrototype() {
     if (!q) return;
     setQuery(q);
     setShowSources(false);
+    setActiveTab("perplexity");
 
     const slug = q.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     try {
@@ -208,76 +211,98 @@ export default function CoveoSearchPrototype() {
           ))}
         </div>
 
-        {/* Answer Panel (+ inline sources) */}
+        {/* Answer Panel with Tabs */}
         {answer && (
           <div className="mt-10 animate-gentle-appear glass rounded-2xl p-8 relative space-y-8 text-lg shadow-medium">
-            {/* Expand / Collapse toggle */}
-            <button
-              onClick={() => setShowSources(!showSources)}
-              className="absolute right-8 top-8 text-coveo-purple text-sm font-medium flex items-center gap-1 hover:text-coveo-purple/80 transition-colors"
-            >
-              {showSources ? '▲ Hide Sources' : '▼ Show Sources'}
-            </button>
-
-            {/* Answer text with inline citations and sources */}
-            <div className="text-apple-dark pt-6">
-              {renderAnswerWithInlineSources()}
-            </div>
-            
-            {/* Follow-up section - Made smaller */}
-            <div className="mt-10 border-t border-black/5 pt-6">
-              <div className="flex items-center gap-2 text-apple-dark mb-3">
-                <h2 className="text-base font-semibold">Follow-up Questions</h2>
-              </div>
-              
-              <div className="space-y-2">
-                {followUpQuestions.slice(0, 3).map((question, index) => (
-                  <button 
-                    key={index} 
-                    onClick={() => handleSearch(question)}
-                    className="w-full text-left p-3 bg-white/50 border border-black/5 rounded-xl hover:bg-white/80 transition-all duration-200 flex items-center justify-between group shadow-soft"
+            {/* Tabs Navigation - New Perplexity-style tabs */}
+            <Tabs defaultValue="perplexity" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+              <div className="border-b border-black/5 -mx-8 px-8">
+                <TabsList className="bg-transparent h-auto p-0 mb-[-1px]">
+                  <TabsTrigger 
+                    value="perplexity"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2 mr-6"
                   >
-                    <span className="text-apple-dark text-sm">{question}</span>
-                    <ArrowRight className="text-coveo-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Sources Used section - Sources from the answer */}
-            <div className="mt-10 border-t border-black/5 pt-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold">Sources Used</h2>
-                  <Badge className="bg-coveo-purple/10 text-coveo-purple hover:bg-coveo-purple/20 ml-2">
-                    {answer.sources.length} Sources
-                  </Badge>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {answer.sources.map((source, index) => (
-                  <a 
-                    key={index}
-                    href={source.url}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="bg-white/50 border border-black/5 rounded-xl p-4 hover:shadow-medium transition-all duration-300 block cursor-pointer"
-                  >
-                    <h3 className="font-semibold text-apple-dark mb-2 flex items-center">
-                      <span className="bg-coveo-purple text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
-                        {source.id}
-                      </span>
-                      <span className="text-sm">{source.label}</span>
-                    </h3>
-                    <div className="flex items-center">
-                      {getSourceIcon(source.type)}
-                      <span className="text-xs text-apple-light-text">{source.type}</span>
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src="/lovable-uploads/67178166-b63c-4697-b66d-82745bf182af.png" 
+                        alt="Coveo" 
+                        className="h-5 w-5 object-contain"
+                      />
+                      <span className="text-sm font-medium">Coveo</span>
                     </div>
-                  </a>
-                ))}
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="sources" 
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2 mr-6"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Link size={18} className="text-coveo-purple" />
+                      <span className="text-sm font-medium">Sources</span>
+                      <Badge className="bg-coveo-purple/10 text-coveo-purple hover:bg-coveo-purple/20 ml-1">
+                        {answer.sources.length}
+                      </Badge>
+                    </div>
+                  </TabsTrigger>
+                </TabsList>
               </div>
-            </div>
+              
+              {/* Tabs Content */}
+              <TabsContent value="perplexity" className="pt-6 mt-0">
+                {/* Answer text with inline citations */}
+                <div className="text-apple-dark">
+                  {renderAnswerWithInlineSources()}
+                </div>
+                
+                {/* Follow-up section - Made smaller */}
+                <div className="mt-10 border-t border-black/5 pt-6">
+                  <div className="flex items-center gap-2 text-apple-dark mb-3">
+                    <h2 className="text-base font-semibold">Follow-up Questions</h2>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    {followUpQuestions.slice(0, 3).map((question, index) => (
+                      <button 
+                        key={index} 
+                        onClick={() => handleSearch(question)}
+                        className="w-full text-left p-3 bg-white/50 border border-black/5 rounded-xl hover:bg-white/80 transition-all duration-200 flex items-center justify-between group shadow-soft"
+                      >
+                        <span className="text-apple-dark text-sm">{question}</span>
+                        <ArrowRight className="text-coveo-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="sources" className="pt-6 mt-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {answer.sources.map((source, index) => (
+                    <a 
+                      key={index}
+                      href={source.url}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="bg-white/50 border border-black/5 rounded-xl p-4 hover:shadow-medium transition-all duration-300 block cursor-pointer"
+                    >
+                      <h3 className="font-semibold text-apple-dark mb-2 flex items-center">
+                        <span className="bg-coveo-purple text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
+                          {source.id}
+                        </span>
+                        <span className="text-sm">{source.label}</span>
+                      </h3>
+                      <p className="text-sm text-apple-dark/80 mb-3 line-clamp-2">{source.excerpt}</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          {getSourceIcon(source.type)}
+                          <span className="text-xs text-apple-light-text">{source.type}</span>
+                        </div>
+                        <span className="text-xs text-coveo-purple">View source ↗</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
             
             {/* Ask anything section */}
             <div className="mt-12 border-t border-black/5 pt-8">
