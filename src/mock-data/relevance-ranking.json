@@ -1,0 +1,22 @@
+
+{
+  "answer": "Coveo's ML relevance ranking combines user behavior signals with content features to continuously optimize search results【1】. The platform's Automatic Relevance Tuning (ART) leverages click-through data to refine rankings over time, ensuring high-intent content surfaces first【2】.",
+  "sources": [
+    {
+      "id": 1,
+      "label": "Coveo Documentation – Relevance Ranking (PDF, p. 4)",
+      "url": "https://docs.coveo.com/en/relevance-ranking.pdf#page=4",
+      "excerpt": "Coveo combines static, dynamic, and contextual ranking factors. Page 4 details how machine learning re-orders search results based on user behavior.",
+      "date": "2024-04-18",
+      "type": "📄 PDF"
+    },
+    {
+      "id": 2,
+      "label": "Coveo Blog – Harnessing AI for Search (Mar 15 2024, Section: ART)",
+      "url": "https://www.coveo.com/blog/harnessing-ai-for-search",
+      "excerpt": "Automatic Relevance Tuning analyzes clicks and queries to adjust ranking weights, promoting content that best meets user intent.",
+      "date": "2024-03-15",
+      "type": "🌐 Web"
+    }
+  ]
+}

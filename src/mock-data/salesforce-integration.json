@@ -1,0 +1,30 @@
+
+{
+  "answer": "Integrating Coveo with Salesforce Service Cloud involves three main steps. First, install the Coveo for Salesforce package from AppExchange and configure authentication【1】. Next, set up content sources to index knowledge articles, cases, and other relevant objects【2】. Finally, add the Coveo search component to your Salesforce communities or console using Lightning Components【3】.",
+  "sources": [
+    {
+      "id": 1,
+      "label": "Coveo for Salesforce Installation Guide",
+      "url": "https://docs.coveo.com/en/1158/",
+      "excerpt": "The installation requires an administrator to deploy the package, configure OAuth for secure API access, and set up proper authentication between Coveo and Salesforce.",
+      "date": "2024-03-10",
+      "type": "📄 Installation Guide"
+    },
+    {
+      "id": 2,
+      "label": "Configuring Coveo Salesforce Sources",
+      "url": "https://docs.coveo.com/en/1896/",
+      "excerpt": "Creating a Salesforce source in Coveo requires specifying which objects to index, setting permissions mapping, and configuring field mappings for search optimization.",
+      "date": "2024-02-28",
+      "type": "⚙️ Configuration"
+    },
+    {
+      "id": 3,
+      "label": "Lightning Experience Implementation",
+      "url": "https://docs.coveo.com/en/3420/",
+      "excerpt": "Add the Coveo Search Component to your Lightning pages by dragging the component from the builder palette and configuring the search interface options.",
+      "date": "2024-01-15",
+      "type": "💻 Developer Guide"
+    }
+  ]
+}

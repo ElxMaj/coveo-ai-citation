@@ -1,0 +1,30 @@
+
+{
+  "answer": "Coveo can index content from a wide variety of sources out-of-the-box【1】. The platform supports common enterprise systems like Salesforce, ServiceNow, Microsoft 365, and SharePoint【2】. It can also connect to web sources, file shares, databases, and custom API sources through its extensible connector framework【3】.",
+  "sources": [
+    {
+      "id": 1,
+      "label": "Coveo Connectors Guide – Overview (Technical Docs)",
+      "url": "https://docs.coveo.com/en/connectors/",
+      "excerpt": "Coveo's connector library includes 50+ pre-built connectors for enterprise systems, cloud storage, web crawling, and structured data sources.",
+      "date": "2024-01-30",
+      "type": "📄 Documentation"
+    },
+    {
+      "id": 2,
+      "label": "Coveo for Salesforce Implementation Guide",
+      "url": "https://docs.coveo.com/en/3420/",
+      "excerpt": "The Coveo for Salesforce connector provides deep integration with Salesforce objects, knowledge articles, communities, and attachments with field-level security.",
+      "date": "2024-02-15", 
+      "type": "📄 Implementation Guide"
+    },
+    {
+      "id": 3,
+      "label": "Coveo Push API Documentation",
+      "url": "https://docs.coveo.com/en/68/",
+      "excerpt": "For custom data sources, Coveo offers a Push API that allows developers to index content from any source using a REST API interface.",
+      "date": "2023-11-12",
+      "type": "⚙️ API Reference"
+    }
+  ]
+}

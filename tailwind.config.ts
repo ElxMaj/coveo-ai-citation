@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom colors for Coveo prototype
+				'brand-primary': '#333357',
+				'brand-secondary': '#40205A',
+				'accent-blue': '#6C63FF',
+				'soft-gray': '#F5F7FA',
+				'medium-gray': '#757575',
+				'dark-gray': '#333333',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +92,25 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' },
+				},
+				'slide-up': {
+					'0%': { opacity: '0', transform: 'translateY(18px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out',
+				'slide-up': 'slide-up 0.5s ease-out',
+			},
+			fontFamily: {
+				inter: ['Inter', 'ui-sans-serif', 'system-ui'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
