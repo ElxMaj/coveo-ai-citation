@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, FileText, Link } from 'lucide-react';
 
 /**
  * CoveoSearchPrototype – mock‑data version
@@ -41,33 +41,6 @@ export default function CoveoSearchPrototype() {
     'What is Coveo Machine Learning and how does it improve search results?',
     'How does Coveo handle personalization in enterprise search?',
     'What are Coveo\'s key features for e-commerce search?',
-  ];
-
-  const sourceCategories = [
-    {
-      title: 'Coveo for Commerce Implementation Guide',
-      category: 'Implementation'
-    },
-    {
-      title: 'Coveo Machine Learning Features Documentation',
-      category: 'Machine Learning'
-    },
-    {
-      title: 'Coveo Cloud V2 Administrator Guide',
-      category: 'Administration'
-    },
-    {
-      title: 'Coveo for Salesforce Implementation Guide',
-      category: 'Implementation'
-    },
-    {
-      title: 'Coveo Relevance Cloud Documentation',
-      category: 'Product Docs'
-    },
-    {
-      title: 'Coveo JavaScript Search Framework Guide',
-      category: 'Developer'
-    }
   ];
 
   const [query, setQuery] = useState('');
@@ -140,6 +113,15 @@ export default function CoveoSearchPrototype() {
         })}
       </div>
     );
+  };
+
+  // Get icon based on the source type
+  const getSourceIcon = (type: string) => {
+    if (type.includes('PDF') || type.includes('Documentation') || type.includes('Guide')) {
+      return <FileText size={16} className="mr-2 text-gray-500" />;
+    } else {
+      return <Link size={16} className="mr-2 text-gray-500" />;
+    }
   };
 
   return (
@@ -218,7 +200,7 @@ export default function CoveoSearchPrototype() {
               </div>
             </div>
             
-            {/* Sources Used section */}
+            {/* Sources Used section - Now showing actual sources from the answer */}
             <div className="mt-10 border-t border-gray-200 pt-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-2 text-brand-primary">
@@ -227,21 +209,26 @@ export default function CoveoSearchPrototype() {
                   </svg>
                   <h2 className="text-lg font-semibold">Sources Used</h2>
                 </div>
-                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 ml-2">15 Sources</Badge>
+                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 ml-2">
+                  {answer.sources.length} Sources
+                </Badge>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {sourceCategories.map((source, index) => (
+                {answer.sources.map((source, index) => (
                   <div 
                     key={index} 
                     className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
-                    <h3 className="font-semibold text-brand-primary mb-2">{source.title}</h3>
+                    <h3 className="font-semibold text-brand-primary mb-2 flex items-center">
+                      <span className="bg-brand-primary text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
+                        {source.id}
+                      </span>
+                      {source.label}
+                    </h3>
                     <div className="flex items-center">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-gray-400">
-                        <path d="M9 17l6-5-6-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <span className="text-sm text-gray-500">{source.category}</span>
+                      {getSourceIcon(source.type)}
+                      <span className="text-sm text-gray-500">{source.type}</span>
                     </div>
                   </div>
                 ))}
@@ -320,3 +307,4 @@ function SourceCard({ source }: { source: Source }) {
     </div>
   );
 }
+
