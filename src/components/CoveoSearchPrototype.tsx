@@ -222,11 +222,11 @@ export default function CoveoSearchPrototype() {
                       <span className="bg-apple-blue text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
                         {source.id}
                       </span>
-                      {source.label}
+                      <span className="text-sm">{source.label}</span>
                     </h3>
                     <div className="flex items-center">
                       {getSourceIcon(source.type)}
-                      <span className="text-sm text-apple-light-text">{source.type}</span>
+                      <span className="text-xs text-apple-light-text">{source.type}</span>
                     </div>
                   </div>
                 ))}
