@@ -268,8 +268,8 @@ function Citation({ id, sources }: { id: string; sources: Source[] }) {
       {`【${id}】`}
       {/* Tooltip */}
       <span className="opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 absolute z-10 ml-1 mt-[-6px] glass rounded-xl p-3 text-xs w-64 shadow-medium">
-        <strong className="block mb-1">{src.label}</strong>
-        {src.excerpt}
+        <strong className="block mb-1 text-apple-blue">{src.label}</strong>
+        <span className="text-apple-dark">{src.excerpt}</span>
         <br />
         <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-apple-blue hover:underline text-[11px] inline-block mt-1">
           View full source ↗
