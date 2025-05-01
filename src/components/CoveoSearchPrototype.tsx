@@ -257,9 +257,12 @@ export default function CoveoSearchPrototype() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {answer.sources.map((source, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white/50 border border-black/5 rounded-xl p-4 hover:shadow-medium transition-all duration-300"
+                  <a 
+                    key={index}
+                    href={source.url}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-white/50 border border-black/5 rounded-xl p-4 hover:shadow-medium transition-all duration-300 block cursor-pointer"
                   >
                     <h3 className="font-semibold text-apple-dark mb-2 flex items-center">
                       <span className="bg-coveo-purple text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
@@ -271,7 +274,7 @@ export default function CoveoSearchPrototype() {
                       {getSourceIcon(source.type)}
                       <span className="text-xs text-apple-light-text">{source.type}</span>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -326,7 +329,12 @@ function Citation({ id, sources }: { id: string; sources: Source[] }) {
 /* ✦ Full source card */
 function SourceCard({ source }: { source: Source }) {
   return (
-    <div className="glass p-4 rounded-xl shadow-inner animate-gentle-appear">
+    <a 
+      href={source.url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="glass p-4 rounded-xl shadow-inner animate-gentle-appear block cursor-pointer"
+    >
       {/* Vertical accent - Changed from neutral to purple color for better contrast */}
       <div className="flex gap-3">
         <span className="w-1 rounded bg-coveo-purple"></span>
@@ -334,21 +342,21 @@ function SourceCard({ source }: { source: Source }) {
         <div className="text-sm leading-snug text-apple-dark">
           <div className="font-medium mb-1 flex items-center gap-1">
             <span>{source.type}</span>
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-coveo-purple hover:underline ml-1">
+            <span className="text-coveo-purple ml-1">
               {`Source ${source.id}: ${source.label}`}
-            </a>
+            </span>
           </div>
           {source.date && (
             <div className="text-[11px] text-apple-light-text mb-2">{source.date}</div>
           )}
           <p>
             {source.excerpt}{' '}
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-coveo-purple hover:underline">
+            <span className="text-coveo-purple hover:underline">
               View full document ↗
-            </a>
+            </span>
           </p>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

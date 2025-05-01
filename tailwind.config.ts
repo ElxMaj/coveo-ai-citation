@@ -73,10 +73,10 @@ export default {
 				'apple-purple': '#BF5AF2',
 				'apple-orange': '#FF9F0A',
 				'apple-green': '#34C759',
-				// Purple color palette
+				// Purple color palette - Making the default and light colors darker
 				'coveo-purple': {
-					DEFAULT: '#7E69AB',
-					'light': '#9b87f5',
+					DEFAULT: '#6E59A5', // Darkened from #7E69AB
+					'light': '#8B5CF6', // Darkened from #9b87f5
 					'dark': '#3A1E5D',
 					'darker': '#1A1F2C',
 				},
