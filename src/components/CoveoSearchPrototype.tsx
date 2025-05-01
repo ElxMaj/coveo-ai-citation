@@ -75,77 +75,63 @@ export default function CoveoSearchPrototype() {
   const renderAnswerWithInlineSources = () => {
     if (!answer) return null;
     
-    // Break the answer into segments: text followed by citation marker
-    const segments = [];
-    let currentText = '';
+    // Process answer text to place citations after sentence periods
+    let processedText = answer.answer;
+    const sentences = [];
     let lastIndex = 0;
     
-    // Find all citation markers and split text accordingly
-    const citationPattern = /【\d+】/g;
+    // Match periods followed by citation markers
+    const sentenceWithCitationPattern = /\.(\s*)(【\d+】)/g;
     let match;
     
-    while ((match = citationPattern.exec(answer.answer)) !== null) {
-      // Extract text before this citation
-      currentText = answer.answer.slice(lastIndex, match.index);
+    while ((match = sentenceWithCitationPattern.exec(answer.answer)) !== null) {
+      const endOfSentence = match.index + 1; // Include the period
+      const beforeCitation = answer.answer.slice(lastIndex, endOfSentence);
+      const citation = match[2]; // The citation marker 【X】
+      const id = citation.match(/\d+/)?.[0] || '';
       
-      // Add text segment and citation to our segments array
-      if (currentText) {
-        segments.push({ type: 'text', content: currentText });
+      // Add current sentence and citation to our segments array
+      if (beforeCitation) {
+        sentences.push({ 
+          text: beforeCitation,
+          citation: citation,
+          id: id,
+          spacing: match[1] // Preserve any spacing between period and citation
+        });
       }
-      
-      segments.push({ 
-        type: 'citation', 
-        content: match[0],
-        id: match[0].match(/\d+/)?.[0] || ''
-      });
       
       lastIndex = match.index + match[0].length;
     }
     
     // Add any remaining text after the last citation
     if (lastIndex < answer.answer.length) {
-      segments.push({ 
-        type: 'text', 
-        content: answer.answer.slice(lastIndex) 
+      sentences.push({ 
+        text: answer.answer.slice(lastIndex),
+        citation: null,
+        id: null,
+        spacing: ''
       });
     }
     
-    // Now render segments with sources placed after periods
+    // Now render sentences with sources placed after periods
     return (
       <div className="text-apple-dark leading-relaxed">
-        {segments.map((segment, index) => {
-          if (segment.type === 'text') {
-            // Find the last period in this text segment
-            const lastPeriodIndex = segment.content.lastIndexOf('.');
-            
-            if (lastPeriodIndex !== -1 && index < segments.length - 1 && segments[index + 1].type === 'citation') {
-              // If there's a period and the next segment is a citation,
-              // split this text segment at the period
-              const beforePeriod = segment.content.slice(0, lastPeriodIndex + 1);
-              const afterPeriod = segment.content.slice(lastPeriodIndex + 1);
-              
-              return (
-                <span key={index}>
-                  {beforePeriod}
-                  <Citation id={segments[index + 1].id} sources={answer.sources} />
-                  {showSources && answer.sources.find(s => s.id.toString() === segments[index + 1].id) && (
-                    <div className="my-4 ml-6 animate-gentle-appear">
-                      <SourceCard source={answer.sources.find(s => s.id.toString() === segments[index + 1].id)!} />
-                    </div>
-                  )}
-                  {afterPeriod}
-                </span>
-              );
-            } else {
-              // Regular text with no special handling needed
-              return <span key={index}>{segment.content}</span>;
-            }
-          } else if (segment.type === 'citation') {
-            // Skip citations here, they're handled with the preceding text
-            return null;
-          }
-          return null;
-        })}
+        {sentences.map((sentence, index) => (
+          <span key={index}>
+            {sentence.text}
+            {sentence.citation && (
+              <>
+                <Citation id={sentence.id} sources={answer.sources} />
+                {showSources && answer.sources.find(s => s.id.toString() === sentence.id) && (
+                  <div className="my-4 ml-6 animate-gentle-appear">
+                    <SourceCard source={answer.sources.find(s => s.id.toString() === sentence.id)!} />
+                  </div>
+                )}
+              </>
+            )}
+            {sentence.spacing}
+          </span>
+        ))}
       </div>
     );
   };
