@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -128,7 +127,14 @@ export default function CoveoSearchPrototype() {
     <div className="min-h-screen bg-soft-gray font-inter text-dark-gray flex flex-col items-center px-4">
       {/* Header */}
       <header className="w-full py-10 bg-gradient-to-r from-brand-primary to-brand-secondary text-white">
-        <h1 className="text-3xl font-semibold text-center">Coveo&nbsp;AI Search</h1>
+        <div className="flex justify-center items-center">
+          <img 
+            src="/lovable-uploads/67178166-b63c-4697-b66d-82745bf182af.png" 
+            alt="Coveo Logo" 
+            className="h-10"
+          />
+          <h1 className="text-3xl font-semibold ml-2">AI Search</h1>
+        </div>
       </header>
 
       {/* Main container */}
@@ -307,4 +313,3 @@ function SourceCard({ source }: { source: Source }) {
     </div>
   );
 }
-
