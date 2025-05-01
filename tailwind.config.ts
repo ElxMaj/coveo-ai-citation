@@ -63,18 +63,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for Coveo prototype
-				'brand-primary': '#333357',
-				'brand-secondary': '#40205A',
-				'accent-blue': '#6C63FF',
-				'soft-gray': '#F5F7FA',
-				'medium-gray': '#757575',
-				'dark-gray': '#333333',
+				// Apple-like color palette
+				'apple-blue': '#0071E3',
+				'apple-gray': '#F5F5F7',
+				'apple-dark': '#1D1D1F',
+				'apple-text': '#1D1D1F',
+				'apple-light-text': '#86868B',
+				'apple-pink': '#F94C57',
+				'apple-purple': '#BF5AF2',
+				'apple-orange': '#FF9F0A',
+				'apple-green': '#34C759',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				md: 'calc(var(--radius) - 4px)',
+				sm: 'calc(var(--radius) - 8px)'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -98,18 +101,19 @@ export default {
 					'100%': { opacity: '1' },
 				},
 				'slide-up': {
-					'0%': { opacity: '0', transform: 'translateY(18px)' },
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' },
 				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.4s ease-out',
-				'slide-up': 'slide-up 0.5s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
 			},
 			fontFamily: {
 				inter: ['Inter', 'ui-sans-serif', 'system-ui'],
+				sf: ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
 			},
 		}
 	},
