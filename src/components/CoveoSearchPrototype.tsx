@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -134,7 +135,7 @@ export default function CoveoSearchPrototype() {
 
       {/* Main container */}
       <main className="w-full max-w-[900px] mt-8 px-4">
-        {/* Search Bar */}
+        {/* Search Bar - Fixed button alignment */}
         <div className="relative animate-gentle-slide-up">
           <input
             type="text"
@@ -145,7 +146,7 @@ export default function CoveoSearchPrototype() {
           />
           <button
             onClick={() => handleSearch(query)}
-            className="absolute right-2 top-2 bg-apple-blue hover:bg-apple-blue/90 text-white px-4 py-3 rounded-xl transition-colors duration-300 text-sm font-medium"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-apple-blue hover:bg-apple-blue/90 text-white px-6 py-2.5 rounded-xl transition-colors duration-300 text-base font-medium"
           >
             Search
           </button>
