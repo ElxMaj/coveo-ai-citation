@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -30,7 +31,7 @@ export default function CoveoSearchPrototype() {
   const followUpQuestions = ['What is Coveo Machine Learning and how does it improve search results?', 'How does Coveo handle personalization in enterprise search?', 'What are Coveo\'s key features for e-commerce search?'];
   const [query, setQuery] = useState('');
   const [answer, setAnswer] = useState<AnswerData | null>(null);
-  const [showSources, setShowSources] = useState(false);
+  const [showSources, setShowSources] = useState<number | false>(false);
   const [activeTab, setActiveTab] = useState("perplexity");
 
   /**
@@ -59,6 +60,11 @@ export default function CoveoSearchPrototype() {
       console.error('Error loading mock file for', slug, err);
       setAnswer(null);
     }
+  };
+
+  // Toggle the display of a source
+  const toggleSource = (sourceId: number) => {
+    setShowSources(currentSource => currentSource === sourceId ? false : sourceId);
   };
 
   // Process answer text with inline sources
@@ -117,8 +123,12 @@ export default function CoveoSearchPrototype() {
             const afterPeriod = segment.content.slice(lastPeriodIndex + 1);
             return <span key={index}>
                   {beforePeriod}
-                  <Citation id={segments[index + 1].id} sources={answer.sources} />
-                  {showSources && answer.sources.find(s => s.id.toString() === segments[index + 1].id) && <div className="my-4 ml-6 animate-gentle-appear">
+                  <Citation 
+                    id={segments[index + 1].id} 
+                    sources={answer.sources} 
+                    onClick={() => toggleSource(parseInt(segments[index + 1].id))}
+                  />
+                  {showSources === parseInt(segments[index + 1].id) && <div className="my-4 ml-6 animate-gentle-appear">
                       <SourceCard source={answer.sources.find(s => s.id.toString() === segments[index + 1].id)!} />
                     </div>}
                   {afterPeriod}
@@ -261,14 +271,16 @@ export default function CoveoSearchPrototype() {
 /* ✦ Inline citation superscript + on‑hover tooltip preview */
 function Citation({
   id,
-  sources
+  sources,
+  onClick
 }: {
   id: string;
   sources: Source[];
+  onClick: () => void;
 }) {
   const src = sources.find(s => s.id.toString() === id.toString());
   if (!src) return null;
-  return <sup className="relative text-coveo-purple hover:cursor-pointer group select-none">
+  return <sup className="relative text-coveo-purple hover:cursor-pointer group select-none" onClick={onClick}>
       {`【${id}】`}
       {/* Tooltip */}
       <span className="opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 absolute z-10 ml-1 mt-[-6px] glass rounded-xl p-3 text-xs w-64 shadow-medium">
