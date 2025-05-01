@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -284,7 +283,7 @@ function Citation({ id, sources }: { id: string; sources: Source[] }) {
 function SourceCard({ source }: { source: Source }) {
   return (
     <div className="glass p-4 rounded-xl shadow-inner animate-gentle-appear">
-      {/* Vertical accent */}
+      {/* Vertical accent - Changed from neutral to blue color for better contrast */}
       <div className="flex gap-3">
         <span className="w-1 rounded bg-apple-blue"></span>
 
