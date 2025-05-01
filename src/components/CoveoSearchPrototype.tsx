@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -77,9 +76,26 @@ export default function CoveoSearchPrototype() {
     if (!answer) return null;
     
     // Make sure all sources have a citation marker in the text
-    // If we have sources that are not cited, we need to ensure they appear in the text
     const sourcesInAnswer = answer.sources.map(source => `【${source.id}】`);
     let processedAnswer = answer.answer;
+    
+    // Check if each source has a citation marker in the answer text
+    answer.sources.forEach(source => {
+      const sourceMarker = `【${source.id}】`;
+      // If the source isn't already cited in the answer, add it at an appropriate place
+      if (!processedAnswer.includes(sourceMarker)) {
+        // Add to the end of a sentence if possible
+        const sentences = processedAnswer.split('.');
+        if (sentences.length > 1) {
+          // Add citation to the end of the first sentence
+          sentences[0] += sourceMarker;
+          processedAnswer = sentences.join('.');
+        } else {
+          // If there are no sentences, append to the end
+          processedAnswer += ' ' + sourceMarker;
+        }
+      }
+    });
     
     // Create a processed version of the text segments
     const segments = [];
