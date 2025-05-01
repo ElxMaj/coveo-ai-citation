@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Badge } from './ui/badge';
-import { ArrowRight, FileText, Link, Search, MessageCircle } from 'lucide-react';
+import { ArrowRight, FileText, Link, Search, Brain } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 /**
@@ -252,7 +252,7 @@ export default function CoveoSearchPrototype() {
                   </TabsTrigger>
                   <TabsTrigger value="reasoning" className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2">
                     <div className="flex items-center gap-2">
-                      <MessageCircle size={18} className="text-coveo-purple" />
+                      <Brain size={18} className="text-coveo-purple" />
                       <span className="text-sm font-medium">Reasoning</span>
                       <Badge className="bg-coveo-purple/10 text-coveo-purple hover:bg-coveo-purple/20 ml-1">
                         {answer.reasoning.length}
