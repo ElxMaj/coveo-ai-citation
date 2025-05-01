@@ -75,35 +75,76 @@ export default function CoveoSearchPrototype() {
   const renderAnswerWithInlineSources = () => {
     if (!answer) return null;
     
-    // Split the answer text by citation markers
-    const segments = answer.answer.split(/(【\d+】)/);
+    // Break the answer into segments: text followed by citation marker
+    const segments = [];
+    let currentText = '';
+    let lastIndex = 0;
     
+    // Find all citation markers and split text accordingly
+    const citationPattern = /【\d+】/g;
+    let match;
+    
+    while ((match = citationPattern.exec(answer.answer)) !== null) {
+      // Extract text before this citation
+      currentText = answer.answer.slice(lastIndex, match.index);
+      
+      // Add text segment and citation to our segments array
+      if (currentText) {
+        segments.push({ type: 'text', content: currentText });
+      }
+      
+      segments.push({ 
+        type: 'citation', 
+        content: match[0],
+        id: match[0].match(/\d+/)?.[0] || ''
+      });
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // Add any remaining text after the last citation
+    if (lastIndex < answer.answer.length) {
+      segments.push({ 
+        type: 'text', 
+        content: answer.answer.slice(lastIndex) 
+      });
+    }
+    
+    // Now render segments with sources placed after periods
     return (
       <div className="text-apple-dark leading-relaxed">
         {segments.map((segment, index) => {
-          // Check if this segment is a citation marker
-          const isCitation = /^【\d+】$/.test(segment);
-          
-          if (isCitation) {
-            // Extract the citation ID
-            const id = segment.match(/\d+/)?.[0] || '';
-            // Find the corresponding source
-            const source = answer.sources.find(s => s.id.toString() === id);
+          if (segment.type === 'text') {
+            // Find the last period in this text segment
+            const lastPeriodIndex = segment.content.lastIndexOf('.');
             
-            return (
-              <span key={index}>
-                <Citation id={id} sources={answer.sources} />
-                {showSources && source && (
-                  <div className="my-4 ml-6 animate-gentle-appear">
-                    <SourceCard source={source} />
-                  </div>
-                )}
-              </span>
-            );
-          } else {
-            // Regular text segment
-            return <span key={index}>{segment}</span>;
+            if (lastPeriodIndex !== -1 && index < segments.length - 1 && segments[index + 1].type === 'citation') {
+              // If there's a period and the next segment is a citation,
+              // split this text segment at the period
+              const beforePeriod = segment.content.slice(0, lastPeriodIndex + 1);
+              const afterPeriod = segment.content.slice(lastPeriodIndex + 1);
+              
+              return (
+                <span key={index}>
+                  {beforePeriod}
+                  <Citation id={segments[index + 1].id} sources={answer.sources} />
+                  {showSources && answer.sources.find(s => s.id.toString() === segments[index + 1].id) && (
+                    <div className="my-4 ml-6 animate-gentle-appear">
+                      <SourceCard source={answer.sources.find(s => s.id.toString() === segments[index + 1].id)!} />
+                    </div>
+                  )}
+                  {afterPeriod}
+                </span>
+              );
+            } else {
+              // Regular text with no special handling needed
+              return <span key={index}>{segment.content}</span>;
+            }
+          } else if (segment.type === 'citation') {
+            // Skip citations here, they're handled with the preceding text
+            return null;
           }
+          return null;
         })}
       </div>
     );
@@ -261,7 +302,7 @@ export default function CoveoSearchPrototype() {
 /* ✦ Inline citation superscript + on‑hover tooltip preview */
 function Citation({ id, sources }: { id: string; sources: Source[] }) {
   const src = sources.find((s) => s.id.toString() === id.toString());
-  if (!src) return <>{`【${id}】`}</>;
+  if (!src) return null;
 
   return (
     <sup className="relative text-apple-blue hover:cursor-pointer group select-none">
