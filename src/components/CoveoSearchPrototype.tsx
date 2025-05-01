@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -121,8 +120,8 @@ export default function CoveoSearchPrototype() {
 
   return (
     <div className="min-h-screen bg-apple-gray font-sf text-apple-dark flex flex-col items-center">
-      {/* Header - Updated with full width and purple gradient */}
-      <header className="w-full py-10 bg-gradient-to-r from-[#9b87f5] to-[#8B5CF6]">
+      {/* Header - Updated with much darker purple gradient */}
+      <header className="w-full py-10 bg-gradient-to-r from-[#1A1F2C] to-[#3A1E5D]">
         <div className="flex justify-center items-center">
           <img 
             src="/lovable-uploads/67178166-b63c-4697-b66d-82745bf182af.png" 
