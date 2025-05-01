@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -164,7 +165,7 @@ export default function CoveoSearchPrototype() {
   return (
     <div className="min-h-screen bg-apple-gray font-sf text-apple-dark flex flex-col items-center">
       {/* Header - Updated with much darker purple gradient */}
-      <header className="w-full py-10 bg-gradient-to-r from-[#1A1F2C] to-[#3A1E5D]">
+      <header className="w-full py-10 bg-gradient-to-r from-coveo-purple-darker to-coveo-purple-dark">
         <div className="flex justify-center items-center">
           <img 
             src="/lovable-uploads/67178166-b63c-4697-b66d-82745bf182af.png" 
@@ -184,23 +185,23 @@ export default function CoveoSearchPrototype() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask anything about Coveo…"
-            className="w-full bg-white/80 backdrop-blur-xl border border-black/5 rounded-2xl p-5 shadow-soft focus:outline-none focus:ring-2 focus:ring-apple-blue/30 text-lg transition-all duration-300"
+            className="w-full bg-white/80 backdrop-blur-xl border border-black/5 rounded-2xl p-5 shadow-soft focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 text-lg transition-all duration-300"
           />
           <button
             onClick={() => handleSearch(query)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-apple-blue hover:bg-apple-blue/90 text-white px-6 py-2.5 rounded-xl transition-colors duration-300 text-base font-medium"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-coveo-purple hover:bg-coveo-purple/90 text-white px-6 py-2.5 rounded-xl transition-colors duration-300 text-base font-medium"
           >
             Search
           </button>
         </div>
 
         {/* Query Pills */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-4 justify-center">
           {presetQueries.map((pq) => (
             <button
               key={pq}
               onClick={() => handleSearch(pq)}
-              className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white text-apple-dark hover:bg-black/5 transition-colors duration-200 shadow-soft"
+              className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white text-coveo-purple-dark hover:bg-coveo-purple/10 transition-colors duration-200 shadow-soft"
             >
               {pq}
             </button>
@@ -213,7 +214,7 @@ export default function CoveoSearchPrototype() {
             {/* Expand / Collapse toggle */}
             <button
               onClick={() => setShowSources(!showSources)}
-              className="absolute right-8 top-8 text-apple-blue text-sm font-medium flex items-center gap-1 hover:text-apple-blue/80 transition-colors"
+              className="absolute right-8 top-8 text-coveo-purple text-sm font-medium flex items-center gap-1 hover:text-coveo-purple/80 transition-colors"
             >
               {showSources ? '▲ Hide Sources' : '▼ Show Sources'}
             </button>
@@ -237,7 +238,7 @@ export default function CoveoSearchPrototype() {
                     className="w-full text-left p-3 bg-white/50 border border-black/5 rounded-xl hover:bg-white/80 transition-all duration-200 flex items-center justify-between group shadow-soft"
                   >
                     <span className="text-apple-dark text-sm">{question}</span>
-                    <ArrowRight className="text-apple-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
+                    <ArrowRight className="text-coveo-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
                   </button>
                 ))}
               </div>
@@ -248,7 +249,7 @@ export default function CoveoSearchPrototype() {
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-2">
                   <h2 className="text-lg font-semibold">Sources Used</h2>
-                  <Badge className="bg-apple-blue/10 text-apple-blue hover:bg-apple-blue/20 ml-2">
+                  <Badge className="bg-coveo-purple/10 text-coveo-purple hover:bg-coveo-purple/20 ml-2">
                     {answer.sources.length} Sources
                   </Badge>
                 </div>
@@ -261,7 +262,7 @@ export default function CoveoSearchPrototype() {
                     className="bg-white/50 border border-black/5 rounded-xl p-4 hover:shadow-medium transition-all duration-300"
                   >
                     <h3 className="font-semibold text-apple-dark mb-2 flex items-center">
-                      <span className="bg-apple-blue text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
+                      <span className="bg-coveo-purple text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2">
                         {source.id}
                       </span>
                       <span className="text-sm">{source.label}</span>
@@ -281,17 +282,17 @@ export default function CoveoSearchPrototype() {
                 <input
                   type="text"
                   placeholder="Ask anything about Coveo..."
-                  className="w-full bg-white/80 backdrop-blur-sm border border-black/5 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-apple-blue/30 transition-all duration-300"
+                  className="w-full bg-white/80 backdrop-blur-sm border border-black/5 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 transition-all duration-300"
                 />
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-apple-blue text-white rounded-full w-7 h-7 flex items-center justify-center">
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-coveo-purple text-white rounded-full w-7 h-7 flex items-center justify-center">
                   <ArrowRight size={16} />
                 </div>
               </div>
               <p className="text-xs text-apple-light-text mt-3 text-center">
                 AI responses may be inaccurate. For key decisions, please 
-                <a href="#" className="text-apple-blue underline mx-1">contact Coveo Support.</a>
+                <a href="#" className="text-coveo-purple underline mx-1">contact Coveo Support.</a>
                 Learn more about 
-                <a href="#" className="text-apple-blue underline ml-1">Coveo's privacy policy.</a>
+                <a href="#" className="text-coveo-purple underline ml-1">Coveo's privacy policy.</a>
               </p>
             </div>
           </div>
@@ -307,14 +308,14 @@ function Citation({ id, sources }: { id: string; sources: Source[] }) {
   if (!src) return null;
 
   return (
-    <sup className="relative text-apple-blue hover:cursor-pointer group select-none">
+    <sup className="relative text-coveo-purple hover:cursor-pointer group select-none">
       {`【${id}】`}
       {/* Tooltip */}
       <span className="opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 absolute z-10 ml-1 mt-[-6px] glass rounded-xl p-3 text-xs w-64 shadow-medium">
-        <strong className="block mb-1 text-apple-blue">{src.label}</strong>
+        <strong className="block mb-1 text-coveo-purple">{src.label}</strong>
         <span className="text-apple-dark">{src.excerpt}</span>
         <br />
-        <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-apple-blue hover:underline text-[11px] inline-block mt-1">
+        <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-coveo-purple hover:underline text-[11px] inline-block mt-1">
           View full source ↗
         </a>
       </span>
@@ -326,14 +327,14 @@ function Citation({ id, sources }: { id: string; sources: Source[] }) {
 function SourceCard({ source }: { source: Source }) {
   return (
     <div className="glass p-4 rounded-xl shadow-inner animate-gentle-appear">
-      {/* Vertical accent - Changed from neutral to blue color for better contrast */}
+      {/* Vertical accent - Changed from neutral to purple color for better contrast */}
       <div className="flex gap-3">
-        <span className="w-1 rounded bg-apple-blue"></span>
+        <span className="w-1 rounded bg-coveo-purple"></span>
 
         <div className="text-sm leading-snug text-apple-dark">
           <div className="font-medium mb-1 flex items-center gap-1">
             <span>{source.type}</span>
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-apple-blue hover:underline ml-1">
+            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-coveo-purple hover:underline ml-1">
               {`Source ${source.id}: ${source.label}`}
             </a>
           </div>
@@ -342,7 +343,7 @@ function SourceCard({ source }: { source: Source }) {
           )}
           <p>
             {source.excerpt}{' '}
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-apple-blue hover:underline">
+            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-coveo-purple hover:underline">
               View full document ↗
             </a>
           </p>

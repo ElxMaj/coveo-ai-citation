@@ -73,6 +73,13 @@ export default {
 				'apple-purple': '#BF5AF2',
 				'apple-orange': '#FF9F0A',
 				'apple-green': '#34C759',
+				// Purple color palette
+				'coveo-purple': {
+					DEFAULT: '#7E69AB',
+					'light': '#9b87f5',
+					'dark': '#3A1E5D',
+					'darker': '#1A1F2C',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
