@@ -1,5 +1,8 @@
 
 import { useState } from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { ArrowRight } from 'lucide-react';
 
 /**
  * CoveoSearchPrototype – mock‑data version
@@ -9,6 +12,8 @@ import { useState } from 'react';
  * ▸ "Expand All Sources / Collapse All Sources" toggle showing source
  *   cards inline directly after each citation.
  * ▸ Sources limited to 3; inline markers must match.
+ * ▸ Follow-up questions section.
+ * ▸ Sources used section with category cards.
  */
 
 interface Source {
@@ -30,6 +35,41 @@ export default function CoveoSearchPrototype() {
     'How does Coveo ML relevance ranking work?',
     'What data sources can Coveo index out-of-the-box?',
     'Steps to integrate Coveo with Salesforce Service Cloud',
+  ];
+  
+  const followUpQuestions = [
+    'What role does AI play in generating actionable insights from sales data?',
+    'What are some successful case studies demonstrating the use of sales analytics data for actionable insights?',
+    'What types of support services practices are highlighted in the TSIA Support Services Benchmark?',
+    'What tactics are most commonly used by education services organizations to improve training content consumption among their clients?',
+    'How can benchmarking help improve the financial performance of service offerings?',
+  ];
+
+  const sourceCategories = [
+    {
+      title: 'Turn Sales Analytics Data into Actionable Insights',
+      category: 'CRO Council'
+    },
+    {
+      title: 'TSIA Support Services Benchmarking',
+      category: 'Support Services'
+    },
+    {
+      title: 'Trends in Content Consumption within Education Services',
+      category: 'Education Services'
+    },
+    {
+      title: 'TSIA Offering Management Benchmarking',
+      category: 'Benchmarking'
+    },
+    {
+      title: 'TSIA Managed Services Benchmarking',
+      category: 'Benchmarking'
+    },
+    {
+      title: 'TSIA Education Services Benchmarking',
+      category: 'Education Services'
+    }
   ];
 
   const [query, setQuery] = useState('');
@@ -157,6 +197,75 @@ export default function CoveoSearchPrototype() {
             {/* Answer text with inline citations and sources */}
             <div className="text-dark-gray pt-6">
               {renderAnswerWithInlineSources()}
+            </div>
+            
+            {/* Follow-up section */}
+            <div className="mt-10 border-t border-gray-200 pt-6">
+              <div className="flex items-center gap-2 text-brand-primary mb-4">
+                <ArrowRight size={20} />
+                <h2 className="text-lg font-semibold">Follow-up</h2>
+              </div>
+              
+              <div className="space-y-3">
+                {followUpQuestions.map((question, index) => (
+                  <button 
+                    key={index} 
+                    onClick={() => handleSearch(question)}
+                    className="w-full text-left p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-between"
+                  >
+                    <span className="text-brand-primary">{question}</span>
+                    <ArrowRight className="text-brand-primary" size={18} />
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Sources Used section */}
+            <div className="mt-10 border-t border-gray-200 pt-6">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 text-brand-primary">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 14.5l5-5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <h2 className="text-lg font-semibold">Sources Used</h2>
+                </div>
+                <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 ml-2">21 Sources</Badge>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {sourceCategories.map((source, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                  >
+                    <h3 className="font-semibold text-brand-primary mb-2">{source.title}</h3>
+                    <div className="flex items-center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-gray-400">
+                        <path d="M9 17l6-5-6-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="text-sm text-gray-500">{source.category}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Ask anything section */}
+            <div className="mt-10 border-t border-gray-200 pt-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Ask anything..."
+                  className="w-full bg-white border border-gray-200 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                />
+                <ArrowRight className="absolute right-4 top-1/2 transform -translate-y-1/2 text-brand-primary" size={18} />
+              </div>
+              <p className="text-xs text-gray-400 mt-2 text-center">
+                AI responses may be inaccurate. For key decisions, please 
+                <a href="#" className="text-accent-blue underline mx-1">submit an inquiry.</a>
+                Learn more about 
+                <a href="#" className="text-accent-blue underline ml-1">TSIA's privacy policy.</a>
+              </p>
             </div>
           </div>
         )}
