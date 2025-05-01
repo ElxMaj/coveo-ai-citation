@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -29,8 +28,6 @@ interface AnswerData {
 
 export default function CoveoSearchPrototype() {
   const presetQueries = [
-    'How does Coveo ML relevance ranking work?',
-    'What data sources can Coveo index out-of-the-box?',
     'Steps to integrate Coveo with Salesforce Service Cloud',
   ];
   
