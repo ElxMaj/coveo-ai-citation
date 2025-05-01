@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -195,8 +194,8 @@ export default function CoveoSearchPrototype() {
           </button>
         </div>
 
-        {/* Query Pills - Updated with flex justify-center */}
-        <div className="flex flex-wrap gap-2 mt-4 justify-center">
+        {/* Query Pills */}
+        <div className="flex flex-wrap gap-2 mt-4">
           {presetQueries.map((pq) => (
             <button
               key={pq}
