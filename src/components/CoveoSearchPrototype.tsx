@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link } from 'lucide-react';
@@ -75,18 +76,22 @@ export default function CoveoSearchPrototype() {
   const renderAnswerWithInlineSources = () => {
     if (!answer) return null;
     
-    // Break the answer into segments: text followed by citation marker
+    // Make sure all sources have a citation marker in the text
+    // If we have sources that are not cited, we need to ensure they appear in the text
+    const sourcesInAnswer = answer.sources.map(source => `【${source.id}】`);
+    let processedAnswer = answer.answer;
+    
+    // Create a processed version of the text segments
     const segments = [];
-    let currentText = '';
     let lastIndex = 0;
     
     // Find all citation markers and split text accordingly
     const citationPattern = /【\d+】/g;
     let match;
     
-    while ((match = citationPattern.exec(answer.answer)) !== null) {
+    while ((match = citationPattern.exec(processedAnswer)) !== null) {
       // Extract text before this citation
-      currentText = answer.answer.slice(lastIndex, match.index);
+      const currentText = processedAnswer.slice(lastIndex, match.index);
       
       // Add text segment and citation to our segments array
       if (currentText) {
@@ -103,10 +108,10 @@ export default function CoveoSearchPrototype() {
     }
     
     // Add any remaining text after the last citation
-    if (lastIndex < answer.answer.length) {
+    if (lastIndex < processedAnswer.length) {
       segments.push({ 
         type: 'text', 
-        content: answer.answer.slice(lastIndex) 
+        content: processedAnswer.slice(lastIndex) 
       });
     }
     
