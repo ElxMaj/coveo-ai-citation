@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -39,9 +40,7 @@ export default function CoveoSearchPrototype() {
   const followUpQuestions = [
     'What is Coveo Machine Learning and how does it improve search results?',
     'How does Coveo handle personalization in enterprise search?',
-    'What are Coveo's key features for e-commerce search?',
-    'How does Coveo's query suggestion feature work?',
-    'What security features does Coveo offer for enterprise search?',
+    'What are Coveo\'s key features for e-commerce search?',
   ];
 
   const sourceCategories = [
@@ -198,22 +197,22 @@ export default function CoveoSearchPrototype() {
               {renderAnswerWithInlineSources()}
             </div>
             
-            {/* Follow-up section */}
-            <div className="mt-10 border-t border-gray-200 pt-6">
-              <div className="flex items-center gap-2 text-brand-primary mb-4">
-                <ArrowRight size={20} />
-                <h2 className="text-lg font-semibold">Follow-up</h2>
+            {/* Follow-up section - Made smaller */}
+            <div className="mt-8 border-t border-gray-200 pt-4">
+              <div className="flex items-center gap-2 text-brand-primary mb-2">
+                <ArrowRight size={16} />
+                <h2 className="text-base font-semibold">Follow-up</h2>
               </div>
               
-              <div className="space-y-3">
-                {followUpQuestions.map((question, index) => (
+              <div className="space-y-2">
+                {followUpQuestions.slice(0, 3).map((question, index) => (
                   <button 
                     key={index} 
                     onClick={() => handleSearch(question)}
-                    className="w-full text-left p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-between"
+                    className="w-full text-left p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-between"
                   >
-                    <span className="text-brand-primary">{question}</span>
-                    <ArrowRight className="text-brand-primary" size={18} />
+                    <span className="text-brand-primary text-sm">{question}</span>
+                    <ArrowRight className="text-brand-primary" size={14} />
                   </button>
                 ))}
               </div>
