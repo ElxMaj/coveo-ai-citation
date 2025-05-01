@@ -194,7 +194,7 @@ export default function CoveoSearchPrototype() {
       <header className="w-full py-10 bg-gradient-to-r from-coveo-purple-darker to-coveo-purple-dark">
         <div className="flex justify-center items-center">
           <img src="/lovable-uploads/67178166-b63c-4697-b66d-82745bf182af.png" alt="Coveo Logo" className="h-10" />
-          <h1 className="text-3xl ml-2 text-white font-light">AI Search</h1>
+          <h1 className="text-3xl ml-2 text-white font-light">AI Search Agent</h1>
         </div>
       </header>
 
