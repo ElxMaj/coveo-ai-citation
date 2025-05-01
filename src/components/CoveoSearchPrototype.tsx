@@ -66,7 +66,7 @@ export default function CoveoSearchPrototype() {
       const mockReasoningData = [{
         step: 1,
         title: "Query Analysis",
-        description: "Analyzed query to identify key concepts: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
+        description: "Analyzed query to identify key intents: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
         timeMs: 85
       }, {
         step: 2,
