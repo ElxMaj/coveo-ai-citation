@@ -179,7 +179,7 @@ export default function CoveoSearchPrototype() {
                   <TabsTrigger value="perplexity" className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2 mr-6">
                     <div className="flex items-center gap-2">
                       
-                      <span className="text-sm font-medium">Coveo</span>
+                      <span className="text-sm font-medium">Generated answer</span>
                     </div>
                   </TabsTrigger>
                   <TabsTrigger value="sources" className="rounded-none border-b-2 border-transparent data-[state=active]:border-coveo-purple data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-2 mr-6">
