@@ -6,8 +6,8 @@ import { useState } from 'react';
  * ------------------------------------------------------------
  * ▸ Search bar with query‑pill shortcuts.
  * ▸ Inline citations (superscript markers) → tooltip preview.
- * ▸ "Expand All Sources / Collapse All Sources" toggle showing full
- *   source cards in‑line (vertical accent bar, inner shadow, metadata).
+ * ▸ "Expand All Sources / Collapse All Sources" toggle showing source
+ *   cards inline directly after each citation.
  * ▸ Sources limited to 3; inline markers must match.
  */
 
@@ -66,6 +66,44 @@ export default function CoveoSearchPrototype() {
     }
   };
 
+  // Process answer text with inline sources
+  const renderAnswerWithInlineSources = () => {
+    if (!answer) return null;
+    
+    // Split the answer text by citation markers
+    const segments = answer.answer.split(/(【\d+】)/);
+    
+    return (
+      <div className="text-dark-gray">
+        {segments.map((segment, index) => {
+          // Check if this segment is a citation marker
+          const isCitation = /^【\d+】$/.test(segment);
+          
+          if (isCitation) {
+            // Extract the citation ID
+            const id = segment.match(/\d+/)?.[0] || '';
+            // Find the corresponding source
+            const source = answer.sources.find(s => s.id.toString() === id);
+            
+            return (
+              <span key={index}>
+                <Citation id={id} sources={answer.sources} />
+                {showSources && source && (
+                  <div className="my-3 ml-6 animate-fade-in">
+                    <SourceCard source={source} />
+                  </div>
+                )}
+              </span>
+            );
+          } else {
+            // Regular text segment
+            return <span key={index}>{segment}</span>;
+          }
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-soft-gray font-inter text-dark-gray flex flex-col items-center px-4">
       {/* Header */}
@@ -105,7 +143,7 @@ export default function CoveoSearchPrototype() {
           ))}
         </div>
 
-        {/* Answer Panel (+ sources) */}
+        {/* Answer Panel (+ inline sources) */}
         {answer && (
           <div className="mt-10 animate-fade-in bg-white/90 backdrop-blur-md border border-white/20 shadow-soft rounded-lg p-6 relative space-y-6 text-lg leading-relaxed">
             {/* Expand / Collapse toggle */}
@@ -116,25 +154,10 @@ export default function CoveoSearchPrototype() {
               {showSources ? '▲ Collapse All Sources' : '▼ Expand All Sources'}
             </button>
 
-            {/* Answer text with inline citations */}
-            <p className="text-dark-gray pt-6">
-              {answer.answer.split(/(【\d+】)/).map((chunk, i) =>
-                /^【\d+】$/.test(chunk) ? (
-                  <Citation key={i} id={chunk.match(/\d+/)?.[0] || ''} sources={answer.sources} />
-                ) : (
-                  chunk
-                )
-              )}
-            </p>
-
-            {/* Source Cards (when expanded) */}
-            {showSources && (
-              <div className="space-y-6">
-                {answer.sources.map((s) => (
-                  <SourceCard key={s.id} source={s} />
-                ))}
-              </div>
-            )}
+            {/* Answer text with inline citations and sources */}
+            <div className="text-dark-gray pt-6">
+              {renderAnswerWithInlineSources()}
+            </div>
           </div>
         )}
       </main>
