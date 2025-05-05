@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link, Search, Brain } from 'lucide-react';
@@ -88,12 +87,12 @@ export default function CoveoSearchPrototype() {
       timeMs: 267
     }];
     
-    // Animate through reasoning steps - MUCH SLOWER NOW
+    // Animate through reasoning steps - 50% FASTER THAN BEFORE
     const totalSteps = mockReasoningData.length;
     
-    // Significantly increase the total animation duration for better readability
-    // Each step will now take 3-4 seconds to complete instead of happening quickly
-    const baseStepDuration = 3500; // 3.5 seconds per step base duration
+    // Reduce the base step duration by 50% to speed up the animation
+    // 3.5 seconds -> 1.75 seconds per step base duration
+    const baseStepDuration = 1750; // 1.75 seconds per step base duration
     
     for (let i = 0; i < totalSteps; i++) {
       const step = mockReasoningData[i];
@@ -101,7 +100,7 @@ export default function CoveoSearchPrototype() {
       
       // Calculate a slowed-down duration based on the step's complexity
       // Longer description = longer display time
-      const stepDuration = baseStepDuration + (step.description.length * 10);
+      const stepDuration = baseStepDuration + (step.description.length * 5); // Reduced the character multiplier too
       
       // Reset progress for this step
       setAnimationProgress(0);
@@ -124,9 +123,9 @@ export default function CoveoSearchPrototype() {
         requestAnimationFrame(animationFrame);
       });
       
-      // Add a small pause at the end of each step
+      // Reduce the pause at the end of each step by 50% as well
       if (i < totalSteps - 1) {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 250));
       }
     }
 
