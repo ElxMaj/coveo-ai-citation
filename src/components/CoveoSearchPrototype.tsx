@@ -87,18 +87,18 @@ export default function CoveoSearchPrototype() {
       timeMs: 267
     }];
     
-    // Animate through reasoning steps - NOW 75% FASTER THAN ORIGINAL
+    // Animate through reasoning steps - NOW 82.5% FASTER THAN ORIGINAL
     const totalSteps = mockReasoningData.length;
     
-    // Reduce the base step duration by another 50% (from 1.75s to 0.875s)
-    const baseStepDuration = 875; // 0.875 seconds per step base duration
+    // Reduce the base step duration by another 30% (from 0.875s to 0.6125s)
+    const baseStepDuration = 612; // ~0.6 seconds per step base duration
     
     for (let i = 0; i < totalSteps; i++) {
       const step = mockReasoningData[i];
       setCurrentReasoningStep(i);
       
       // Further reduce the character multiplier for faster animation
-      const stepDuration = baseStepDuration + (step.description.length * 2.5); // Reduced the character multiplier by 50%
+      const stepDuration = baseStepDuration + (step.description.length * 1.75); // Reduced the character multiplier by 30%
       
       // Reset progress for this step
       setAnimationProgress(0);
@@ -121,9 +121,9 @@ export default function CoveoSearchPrototype() {
         requestAnimationFrame(animationFrame);
       });
       
-      // Further reduce the pause between steps by 50%
+      // Further reduce the pause between steps by 30%
       if (i < totalSteps - 1) {
-        await new Promise(resolve => setTimeout(resolve, 125));
+        await new Promise(resolve => setTimeout(resolve, 87)); // Reduced from 125ms to ~87ms
       }
     }
 
