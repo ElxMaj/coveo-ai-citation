@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link, Search, Brain } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Progress } from './ui/progress';
 
 /**
  * CoveoSearchPrototype – Apple-inspired UI/UX
@@ -39,6 +40,9 @@ export default function CoveoSearchPrototype() {
   const [answer, setAnswer] = useState<AnswerData | null>(null);
   const [showSources, setShowSources] = useState<number | false>(false);
   const [activeTab, setActiveTab] = useState("perplexity");
+  const [isSearching, setIsSearching] = useState(false);
+  const [currentReasoningStep, setCurrentReasoningStep] = useState<number | null>(null);
+  const [animationProgress, setAnimationProgress] = useState(0);
 
   /**
    * Fetch mock JSON in /src/mock-data based on slugified query.
@@ -48,7 +52,73 @@ export default function CoveoSearchPrototype() {
     setQuery(q);
     setShowSources(false);
     setActiveTab("perplexity");
+    setIsSearching(true);
+    setCurrentReasoningStep(null);
+    setAnimationProgress(0);
+    setAnswer(null);
+    
     const slug = q.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    
+    // Mock reasoning data
+    const mockReasoningData = [{
+      step: 1,
+      title: "Query Analysis",
+      description: "Analyzed query to identify key intents: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
+      timeMs: 85
+    }, {
+      step: 2,
+      title: "Knowledge Base Search",
+      description: "Searched Coveo documentation with specialized weights for technical integration guides. Found 14 potential documents with relevance scores between 0.82-0.95.",
+      timeMs: 223
+    }, {
+      step: 3,
+      title: "Source Evaluation",
+      description: "Assessed document freshness, accuracy, and comprehensiveness. Selected 3 primary sources with highest combined relevance and authority scores.",
+      timeMs: 178
+    }, {
+      step: 4,
+      title: "Semantic Chunking",
+      description: "Extracted relevant passages from selected documents. Applied contextual chunking to maintain procedural integrity of multi-step instructions.",
+      timeMs: 144
+    }, {
+      step: 5,
+      title: "Answer Synthesis",
+      description: "Generated comprehensive answer using extracted information. Structured response with sequential steps, maintained technical accuracy, and preserved source attribution.",
+      timeMs: 267
+    }];
+    
+    // Animate through reasoning steps
+    const totalSteps = mockReasoningData.length;
+    const totalDuration = mockReasoningData.reduce((sum, step) => sum + step.timeMs, 0);
+    let elapsed = 0;
+    
+    for (let i = 0; i < totalSteps; i++) {
+      const step = mockReasoningData[i];
+      setCurrentReasoningStep(i);
+      
+      // Calculate progress percentage for this step
+      const stepStart = elapsed / totalDuration * 100;
+      elapsed += step.timeMs;
+      const stepEnd = elapsed / totalDuration * 100;
+      
+      // Animate progress for this step
+      const stepDuration = step.timeMs;
+      const framesPerMs = 1000 / 60 / stepDuration; // 60fps
+      let currentProgress = stepStart;
+      
+      await new Promise<void>((resolve) => {
+        const stepInterval = setInterval(() => {
+          currentProgress += (stepEnd - stepStart) * framesPerMs * 10; // Adjust speed multiplier
+          if (currentProgress >= stepEnd) {
+            currentProgress = stepEnd;
+            clearInterval(stepInterval);
+            resolve();
+          }
+          setAnimationProgress(currentProgress);
+        }, 10);
+      });
+    }
+
     try {
       let data;
       if (slug.includes('relevance-ranking')) {
@@ -59,45 +129,21 @@ export default function CoveoSearchPrototype() {
         data = await import('../mock-data/salesforce-integration.json');
       } else {
         console.error('No matching mock file for', slug);
+        setIsSearching(false);
         return;
       }
-
-      // Add mock reasoning data to the existing data
-      const mockReasoningData = [{
-        step: 1,
-        title: "Query Analysis",
-        description: "Analyzed query to identify key intents: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
-        timeMs: 85
-      }, {
-        step: 2,
-        title: "Knowledge Base Search",
-        description: "Searched Coveo documentation with specialized weights for technical integration guides. Found 14 potential documents with relevance scores between 0.82-0.95.",
-        timeMs: 223
-      }, {
-        step: 3,
-        title: "Source Evaluation",
-        description: "Assessed document freshness, accuracy, and comprehensiveness. Selected 3 primary sources with highest combined relevance and authority scores.",
-        timeMs: 178
-      }, {
-        step: 4,
-        title: "Semantic Chunking",
-        description: "Extracted relevant passages from selected documents. Applied contextual chunking to maintain procedural integrity of multi-step instructions.",
-        timeMs: 144
-      }, {
-        step: 5,
-        title: "Answer Synthesis",
-        description: "Generated comprehensive answer using extracted information. Structured response with sequential steps, maintained technical accuracy, and preserved source attribution.",
-        timeMs: 267
-      }];
 
       // Add the reasoning data to the answer
       setAnswer({
         ...data,
         reasoning: mockReasoningData
       });
+      
+      setIsSearching(false);
     } catch (err) {
       console.error('Error loading mock file for', slug, err);
       setAnswer(null);
+      setIsSearching(false);
     }
   };
 
@@ -189,6 +235,94 @@ export default function CoveoSearchPrototype() {
       return <Link size={16} className="mr-2 text-apple-light-text" />;
     }
   };
+  
+  // Render the reasoning animation
+  const renderReasoningAnimation = () => {
+    if (!isSearching) return null;
+    
+    const mockReasoningData = [{
+      step: 1,
+      title: "Query Analysis",
+      description: "Analyzed query to identify key intents: 'Coveo', 'Salesforce', 'integration', 'steps'. Determined primary intent as procedural integration instructions.",
+      timeMs: 85
+    }, {
+      step: 2,
+      title: "Knowledge Base Search",
+      description: "Searched Coveo documentation with specialized weights for technical integration guides. Found 14 potential documents with relevance scores between 0.82-0.95.",
+      timeMs: 223
+    }, {
+      step: 3,
+      title: "Source Evaluation",
+      description: "Assessed document freshness, accuracy, and comprehensiveness. Selected 3 primary sources with highest combined relevance and authority scores.",
+      timeMs: 178
+    }, {
+      step: 4,
+      title: "Semantic Chunking",
+      description: "Extracted relevant passages from selected documents. Applied contextual chunking to maintain procedural integrity of multi-step instructions.",
+      timeMs: 144
+    }, {
+      step: 5,
+      title: "Answer Synthesis",
+      description: "Generated comprehensive answer using extracted information. Structured response with sequential steps, maintained technical accuracy, and preserved source attribution.",
+      timeMs: 267
+    }];
+    
+    return (
+      <div className="mt-10 animate-gentle-appear glass rounded-2xl p-8 relative space-y-6 text-lg shadow-medium">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Brain size={24} className="text-coveo-purple animate-pulse" />
+            <h2 className="text-xl font-medium text-apple-dark">Reasoning in progress</h2>
+          </div>
+          <div className="text-sm text-apple-light-text">
+            {currentReasoningStep !== null ? 
+              `Step ${currentReasoningStep + 1} of ${mockReasoningData.length}` : 
+              "Initializing..."}
+          </div>
+        </div>
+        
+        <Progress value={animationProgress} className="h-1.5 w-full bg-gray-100" />
+        
+        <div className="space-y-6 mt-4">
+          {mockReasoningData.map((step, index) => {
+            const isActive = currentReasoningStep === index;
+            const isPast = currentReasoningStep !== null && index < currentReasoningStep;
+            
+            return (
+              <div 
+                key={index} 
+                className={`flex items-start transition-all duration-300 
+                  ${isActive ? "opacity-100" : isPast ? "opacity-70" : "opacity-40"}`}
+              >
+                <div className={`rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3
+                  ${isActive ? "bg-coveo-purple text-white" : 
+                    isPast ? "bg-coveo-purple/20 text-coveo-purple" : 
+                    "bg-gray-100 text-gray-400"}`}
+                >
+                  {step.step}
+                </div>
+                <div>
+                  <h3 className={`font-medium ${isActive ? "text-coveo-purple" : "text-apple-dark"}`}>
+                    {step.title}
+                  </h3>
+                  {isActive && (
+                    <p className="text-sm text-apple-dark mt-1 animate-gentle-appear">
+                      {step.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        
+        <p className="text-sm text-center text-apple-light-text italic">
+          Using Coveo's advanced AI to find the most relevant information for your query...
+        </p>
+      </div>
+    );
+  };
+  
   return <div className="min-h-screen bg-apple-gray font-sf text-apple-dark flex flex-col items-center">
       {/* Header - Updated with much darker purple gradient */}
       <header className="w-full py-10 bg-gradient-to-r from-coveo-purple-darker to-coveo-purple-dark">
@@ -202,21 +336,43 @@ export default function CoveoSearchPrototype() {
       <main className="w-full max-w-[900px] mt-8 px-4">
         {/* Search Bar - Fixed button alignment */}
         <div className="relative animate-gentle-slide-up">
-          <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Ask anything about Coveo…" className="w-full bg-white/80 backdrop-blur-xl border border-black/5 rounded-2xl p-5 shadow-soft focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 text-lg transition-all duration-300" />
-          <button onClick={() => handleSearch(query)} className="absolute right-4 top-1/2 -translate-y-1/2 bg-coveo-purple hover:bg-coveo-purple/90 text-white px-6 py-2.5 rounded-xl transition-colors duration-300 text-base font-medium">
-            Search
+          <input 
+            type="text" 
+            value={query} 
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSearch(query)}
+            disabled={isSearching}
+            placeholder="Ask anything about Coveo…" 
+            className="w-full bg-white/80 backdrop-blur-xl border border-black/5 rounded-2xl p-5 shadow-soft focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 text-lg transition-all duration-300" 
+          />
+          <button 
+            onClick={() => handleSearch(query)} 
+            disabled={isSearching}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-coveo-purple hover:bg-coveo-purple/90 text-white px-6 py-2.5 rounded-xl transition-colors duration-300 text-base font-medium disabled:opacity-70"
+          >
+            {isSearching ? (
+              <div className="flex items-center gap-2">
+                <div className="animate-spin h-4 w-4 border-2 border-white/80 border-t-transparent rounded-full"></div>
+                <span>Searching</span>
+              </div>
+            ) : (
+              <span>Search</span>
+            )}
           </button>
         </div>
 
         {/* Query Pills */}
         <div className="flex flex-wrap gap-2 mt-4 justify-center">
-          {presetQueries.map(pq => <button key={pq} onClick={() => handleSearch(pq)} className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white text-coveo-purple-dark hover:bg-coveo-purple/10 transition-colors duration-200 shadow-soft">
+          {presetQueries.map(pq => <button key={pq} onClick={() => handleSearch(pq)} disabled={isSearching} className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white text-coveo-purple-dark hover:bg-coveo-purple/10 transition-colors duration-200 shadow-soft disabled:opacity-70">
               {pq}
             </button>)}
         </div>
 
+        {/* Reasoning Animation */}
+        {isSearching && renderReasoningAnimation()}
+
         {/* Answer Panel with Tabs */}
-        {answer && <div className="mt-10 animate-gentle-appear glass rounded-2xl p-8 relative space-y-8 text-lg shadow-medium">
+        {answer && !isSearching && <div className="mt-10 animate-gentle-appear glass rounded-2xl p-8 relative space-y-8 text-lg shadow-medium">
             {/* Tabs Navigation - New Perplexity-style tabs */}
             <Tabs defaultValue="perplexity" className="w-full" value={activeTab} onValueChange={setActiveTab}>
               <div className="border-b border-black/5 -mx-8 px-8">
@@ -320,7 +476,11 @@ export default function CoveoSearchPrototype() {
             {/* Ask anything section */}
             <div className="mt-12 border-t border-black/5 pt-8">
               <div className="relative">
-                <input type="text" placeholder="Ask anything about Coveo..." className="w-full bg-white/80 backdrop-blur-sm border border-black/5 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 transition-all duration-300" />
+                <input 
+                  type="text" 
+                  placeholder="Ask anything about Coveo..." 
+                  className="w-full bg-white/80 backdrop-blur-sm border border-black/5 rounded-full py-3 px-5 focus:outline-none focus:ring-2 focus:ring-coveo-purple/30 transition-all duration-300" 
+                />
                 <div className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-coveo-purple text-white rounded-full w-7 h-7 flex items-center justify-center">
                   <ArrowRight size={16} />
                 </div>
