@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Badge } from './ui/badge';
 import { ArrowRight, FileText, Link, Search, Brain } from 'lucide-react';
@@ -87,36 +88,46 @@ export default function CoveoSearchPrototype() {
       timeMs: 267
     }];
     
-    // Animate through reasoning steps
+    // Animate through reasoning steps - MUCH SLOWER NOW
     const totalSteps = mockReasoningData.length;
-    const totalDuration = mockReasoningData.reduce((sum, step) => sum + step.timeMs, 0);
-    let elapsed = 0;
+    
+    // Significantly increase the total animation duration for better readability
+    // Each step will now take 3-4 seconds to complete instead of happening quickly
+    const baseStepDuration = 3500; // 3.5 seconds per step base duration
     
     for (let i = 0; i < totalSteps; i++) {
       const step = mockReasoningData[i];
       setCurrentReasoningStep(i);
       
-      // Calculate progress percentage for this step
-      const stepStart = elapsed / totalDuration * 100;
-      elapsed += step.timeMs;
-      const stepEnd = elapsed / totalDuration * 100;
+      // Calculate a slowed-down duration based on the step's complexity
+      // Longer description = longer display time
+      const stepDuration = baseStepDuration + (step.description.length * 10);
+      
+      // Reset progress for this step
+      setAnimationProgress(0);
       
       // Animate progress for this step
-      const stepDuration = step.timeMs;
-      const framesPerMs = 1000 / 60 / stepDuration; // 60fps
-      let currentProgress = stepStart;
-      
       await new Promise<void>((resolve) => {
-        const stepInterval = setInterval(() => {
-          currentProgress += (stepEnd - stepStart) * framesPerMs * 10; // Adjust speed multiplier
-          if (currentProgress >= stepEnd) {
-            currentProgress = stepEnd;
-            clearInterval(stepInterval);
+        const startTime = Date.now();
+        const animationFrame = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / stepDuration * 100, 100);
+          setAnimationProgress(progress);
+          
+          if (progress < 100) {
+            requestAnimationFrame(animationFrame);
+          } else {
             resolve();
           }
-          setAnimationProgress(currentProgress);
-        }, 10);
+        };
+        
+        requestAnimationFrame(animationFrame);
       });
+      
+      // Add a small pause at the end of each step
+      if (i < totalSteps - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
 
     try {
