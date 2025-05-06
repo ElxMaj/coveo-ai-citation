@@ -87,33 +87,42 @@ export default function CoveoSearchPrototype() {
       timeMs: 267
     }];
     
-    // Animate through reasoning steps - NOW 82.5% FASTER THAN ORIGINAL
+    // Animate through reasoning steps - NOW WITH CONTINUOUS PROGRESS BAR
     const totalSteps = mockReasoningData.length;
     
-    // Reduce the base step duration by another 30% (from 0.875s to 0.6125s)
+    // Base step duration (maintain the same speed from last implementation)
     const baseStepDuration = 612; // ~0.6 seconds per step base duration
+    
+    // Calculate total animation time to use for continuous progress bar
+    const totalAnimationTime = mockReasoningData.reduce((total, step) => {
+      return total + baseStepDuration + (step.description.length * 1.75);
+    }, 0) + ((totalSteps - 1) * 87); // Add pauses between steps
+    
+    let elapsedAnimationTime = 0;
     
     for (let i = 0; i < totalSteps; i++) {
       const step = mockReasoningData[i];
       setCurrentReasoningStep(i);
       
-      // Further reduce the character multiplier for faster animation
-      const stepDuration = baseStepDuration + (step.description.length * 1.75); // Reduced the character multiplier by 30%
+      // Calculate duration for this step
+      const stepDuration = baseStepDuration + (step.description.length * 1.75);
       
-      // Reset progress for this step
-      setAnimationProgress(0);
+      // Animate this step while updating the overall progress
+      const startTime = Date.now();
       
-      // Animate progress for this step
       await new Promise<void>((resolve) => {
-        const startTime = Date.now();
         const animationFrame = () => {
-          const elapsed = Date.now() - startTime;
-          const progress = Math.min(elapsed / stepDuration * 100, 100);
-          setAnimationProgress(progress);
-          
-          if (progress < 100) {
+          const stepElapsed = Date.now() - startTime;
+          if (stepElapsed < stepDuration) {
+            // Update elapsed time based on actual time passed
+            const newElapsedTime = elapsedAnimationTime + stepElapsed;
+            // Calculate overall progress as a percentage of total time
+            const overallProgress = Math.min((newElapsedTime / totalAnimationTime) * 100, 100);
+            setAnimationProgress(overallProgress);
             requestAnimationFrame(animationFrame);
           } else {
+            // Step is complete, update elapsed time and resolve
+            elapsedAnimationTime += stepDuration;
             resolve();
           }
         };
@@ -121,11 +130,30 @@ export default function CoveoSearchPrototype() {
         requestAnimationFrame(animationFrame);
       });
       
-      // Further reduce the pause between steps by 30%
+      // Add pause between steps (but not after the last step)
       if (i < totalSteps - 1) {
-        await new Promise(resolve => setTimeout(resolve, 87)); // Reduced from 125ms to ~87ms
+        const pauseStart = Date.now();
+        await new Promise<void>((resolve) => {
+          const pauseAnimation = () => {
+            const pauseElapsed = Date.now() - pauseStart;
+            if (pauseElapsed < 87) { // 87ms pause
+              // Update progress during pause too
+              const newElapsedTime = elapsedAnimationTime + pauseElapsed;
+              const overallProgress = Math.min((newElapsedTime / totalAnimationTime) * 100, 100);
+              setAnimationProgress(overallProgress);
+              requestAnimationFrame(pauseAnimation);
+            } else {
+              elapsedAnimationTime += 87; // Add pause time to elapsed time
+              resolve();
+            }
+          };
+          requestAnimationFrame(pauseAnimation);
+        });
       }
     }
+
+    // Ensure we reach 100% at the end
+    setAnimationProgress(100);
 
     try {
       let data;
